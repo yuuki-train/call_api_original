@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import fetch from 'node-fetch';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+class App extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      name: '',
+      color: '',
+      start: '',
+      finish: ''
+    }
+  }
+  componentWillMount () {
+    const URL = 'http://localhost:8080/api/original/getOsakaMetroLine'
+    fetch(URL, {mode: 'cors'})
+    .then(res => res.json())
+    .then(json => {
+      this.setState({
+        name: json['name'],
+        color: json['color'],
+        start: json['start'],
+        finish: json['finish']
+      })
+    });
+  }
+
+  render() {
+    return <div className='App'>
+      name: {this.state.name} <br />
+      color: {this.state.color} <br />
+      start: {this.state.start} <br />
+      finish: {this.state.finish} <br />
     </div>
-  );
+  }
 }
 
 export default App;
